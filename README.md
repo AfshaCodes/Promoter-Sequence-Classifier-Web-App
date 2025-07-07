@@ -5,6 +5,8 @@ This project is a deep learning-based DNA promoter sequence classifier built usi
 
 ---
 
+![App Screenshot](app_home.png)
+
 ## 📁 Project Structure
 
 ```
