@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .container {
+            max-width: 700px;
+            margin-top: 50px;
+            background-color: #1f1f1f;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px #00ffcc;
+        }
+        .btn-home {
+            background-color: #0984e3;
+            border: none;
+        }
+        .btn-home:hover {
+            background-color: #74b9ff;
+        }
+        .alert {
+            font-size: 18px;
+        }
+        .card {
+            border: 1px solid #00ffcc;
+            border-radius: 8px;
+        }
+        pre {
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            margin-bottom: 0;
+            word-break: break-word;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container text-center">
+    <h2 class="mb-4">🔍 Prediction Result</h2>
+
+    {% if message %}
+      {% if "not" in message|lower %}
+        <div class="alert alert-danger" role="alert">
+            <strong>❌ {{ message }}</strong>
+        </div>
+      {% else %}
+        <div class="alert alert-success" role="alert">
+            <strong>✅ {{ message }}</strong>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if gene_info %}
+        <h4 class="mt-4">🧬 Promoter Details</h4>
+
+        <div class="card bg-dark text-light p-3 mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <strong>📌 Sequence:</strong>
+                <button class="btn btn-sm btn-outline-light" onclick="copyText()">📋 Copy</button>
+            </div>
+            <pre id="sequenceBox">{{ gene_info.sequence }}</pre>
+        </div>
+
+        <ul class="list-group list-group-flush text-start mt-3">
+          {% for key, value in gene_info.items() if key != 'sequence' %}
+            <li class="list-group-item bg-dark text-light"><b>{{ key }}:</b> {{ value }}</li>
+          {% endfor %}
+        </ul>
+
+    {% elif epd_link %}
+        <a href="{{ epd_link }}" target="_blank" class="btn btn-warning mt-3">🔗 View in EPD</a>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}" class="btn btn-home mt-4">⬅️ Back to Home</a>
+</div>
+
+<script>
+function copyText() {
+    const text = document.getElementById("sequenceBox").innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        alert("✅ Sequence copied to clipboard!");
+    });
+}
+</script>
+
+</body>
+</html>
